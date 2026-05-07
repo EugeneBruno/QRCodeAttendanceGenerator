@@ -41,13 +41,19 @@ export async function POST(req: Request) {
             );
         }
 
+        const jwtSecret = process.env.JWT_SECRET;
+
+        if (!jwtSecret) {
+            throw new Error("JWT_SECRET is missing");
+        }
+
         const token = jwt.sign(
             {
                 id: user.id,
                 email: user.email,
                 role: user.role,
             },
-            process.env.JWT_SECRET as string,
+            jwtSecret,
             {
                 expiresIn: "7d",
             }
