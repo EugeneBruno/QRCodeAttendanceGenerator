@@ -14,9 +14,16 @@ export async function POST(req: Request) {
             );
         }
 
+        if (!/^Au/.test(matricNumber)) {
+            return NextResponse.json(
+                { error: "Invalid Matriculation number format" },
+                { status: 400 }
+            );
+        }
+
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({
-            where: { email }
+            where: { matricNumber }
         });
 
         if (existingUser) {
@@ -35,6 +42,7 @@ export async function POST(req: Request) {
                 name,
                 email,
                 password: hashedPassword,
+                matricNumber,
                 role: role
             }
         });
@@ -52,7 +60,7 @@ export async function POST(req: Request) {
         console.log(error);
 
         return NextResponse.json(
-            {message: "An error occured while registering the user"},
+            {message: `error: ${error.message || "Internal Server Error"}`},
             {status: 500}
         );
     }
