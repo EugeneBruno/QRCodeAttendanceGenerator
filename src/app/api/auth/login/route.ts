@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
         if (!user){
             return NextResponse.json(
-                {message: "Invalid email or password"},
+                {message: "Invalid matric no or password"},
                 {status: 401}
             );
         }
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
         if (!isPasswordValid){
             return NextResponse.json(
-                {message: "Invalid email or password"},
+                {message: "Invalid matric no or password"},
                 {status: 401}
             );
         }
