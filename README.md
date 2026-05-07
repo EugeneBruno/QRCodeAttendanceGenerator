@@ -163,13 +163,3 @@ Authorization: Bearer jwt_token_here
 
 ---
 
-# Current Backend Progress
-
-| Feature | Status |
-|---|---|
-| User Registration | Completed |
-| User Login | Completed |
-| JWT Authentication | Completed |
-| Course Creation | In Progress |
-| Attendance Session | Pending |
-| QR Attendance Marking | Pending |
