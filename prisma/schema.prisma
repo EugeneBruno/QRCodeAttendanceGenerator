@@ -18,12 +18,13 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(STUDENT)
-  createdAt DateTime @default(now())
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  identifier String   @unique
+  password   String
+  role       Role     @default(STUDENT)
+  createdAt  DateTime @default(now())
 
   coursesTaught Course[] @relation("LecturerCourses")
   enrollments   Enrollment[]

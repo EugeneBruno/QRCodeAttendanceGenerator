@@ -5,9 +5,9 @@ import  { NextResponse } from "next/server";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, email, password } = body;
+        const { name, email, identifier, password } = body;
 
-        if (!name || !email || !password) {
+        if (!name || !email || !identifier || !password) {
             return NextResponse.json(
                 { error: "Missing required fields" }, 
                 { status: 400 }
@@ -15,13 +15,18 @@ export async function POST(req: Request) {
         }
 
         // Check if user already exists
-        const existingUser = await prisma.user.findUnique({
-            where: { email }
+        const existingUser = await prisma.user.findFirst({
+            where: { 
+                OR: [
+                    { email },
+                    { identifier },
+                ],
+            }  
         });
 
         if (existingUser) {
             return NextResponse.json(
-                { error: "User already exists" }, 
+                { error: "Email or ID number already in use" }, 
                 { status: 400 }
             );
         }
@@ -34,6 +39,7 @@ export async function POST(req: Request) {
             data: {
                 name,
                 email,
+                identifier,
                 password: hashedPassword,
                 role: "STUDENT",
             }

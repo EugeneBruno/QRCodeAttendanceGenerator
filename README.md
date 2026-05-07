@@ -1,36 +1,175 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QR Attendance System API Documentation
 
-## Getting Started
+## Base URL
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```txt
+http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Authentication Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 1. Register User
 
-## Learn More
+### Endpoint
 
-To learn more about Next.js, take a look at the following resources:
+```http
+POST /api/auth/register
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Request Body
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```json
+{
+  "name": "Bruno",
+  "email": "bruno@gmail.com",
+  "identifier": "AUL/SEN/23/001",
+  "password": "12345678"
+}
+```
 
-## Deploy on Vercel
+### Success Response
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Status Code:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```txt
+201 Created
+```
+
+Response:
+
+```json
+{
+  "message": "User registered successfully",
+  "user": {
+    "id": "user_id",
+    "name": "Bruno",
+    "email": "bruno@gmail.com",
+    "identifier": "AUL/SEN/23/001",
+    "role": "STUDENT",
+    "createdAt": "2026-05-07T13:59:18.617Z"
+  }
+}
+```
+
+### Error Responses
+
+#### Missing Fields
+
+```txt
+400 Bad Request
+```
+
+```json
+{
+  "message": "All fields are required"
+}
+```
+
+#### User Already Exists
+
+```txt
+409 Conflict
+```
+
+```json
+{
+  "message": "Email or ID number already exists"
+}
+```
+
+---
+
+## 2. Login User
+
+### Endpoint
+
+```http
+POST /api/auth/login
+```
+
+### Request Body
+
+```json
+{
+  "identifier": "AUL/SEN/23/001",
+  "password": "12345678"
+}
+```
+
+### Success Response
+
+Status Code:
+
+```txt
+200 OK
+```
+
+Response:
+
+```json
+{
+  "message": "Login successful",
+  "user": {
+    "id": "user_id",
+    "name": "Bruno",
+    "email": "bruno@gmail.com",
+    "identifier": "AUL/SEN/23/001",
+    "role": "STUDENT",
+    "createdAt": "2026-05-07T13:59:18.617Z"
+  },
+  "token": "jwt_token_here"
+}
+```
+
+### Error Responses
+
+#### Missing Fields
+
+```txt
+400 Bad Request
+```
+
+```json
+{
+  "message": "All fields are required"
+}
+```
+
+#### Invalid Credentials
+
+```txt
+401 Unauthorized
+```
+
+```json
+{
+  "message": "Invalid credentials"
+}
+```
+
+---
+
+# Authentication for Protected Routes
+
+Frontend should include the JWT token in protected requests.
+
+Example:
+
+```http
+Authorization: Bearer jwt_token_here
+```
+
+---
+
+# Current Backend Progress
+
+| Feature | Status |
+|---|---|
+| User Registration | Completed |
+| User Login | Completed |
+| JWT Authentication | Completed |
+| Course Creation | In Progress |
+| Attendance Session | Pending |
+| QR Attendance Marking | Pending |

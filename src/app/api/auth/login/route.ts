@@ -7,9 +7,9 @@ export async function POST(req: Request) {
     try{
         const body = await req.json();
 
-        const { email, password } = body;
+        const { identifier, password } = body;
 
-        if (!email || !password){
+        if (!identifier || !password){
             return NextResponse.json(
                 {message: "All fields are required"},
                 {status: 400}
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
         const user = await prisma.user.findUnique({
             where: {
-                email,
+                identifier,
             },
         });
 
