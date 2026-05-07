@@ -7,9 +7,9 @@ export async function POST(req: Request) {
     try{
         const body = await req.json();
 
-        const { email, password } = body;
+        const { matricNumber, password } = body;
 
-        if (!email || !password){
+        if (!matricNumber || !password){
             return NextResponse.json(
                 {message: "All fields are required"},
                 {status: 400}
@@ -18,13 +18,13 @@ export async function POST(req: Request) {
 
         const user = await prisma.user.findUnique({
             where: {
-                email,
+                matricNumber,
             },
         });
 
         if (!user){
             return NextResponse.json(
-                {message: "Invalid email or password"},
+                {message: "Invalid matric no or password"},
                 {status: 401}
             );
         }
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
         if (!isPasswordValid){
             return NextResponse.json(
-                {message: "Invalid email or password"},
+                {message: "Invalid matric no or password"},
                 {status: 401}
             );
         }
