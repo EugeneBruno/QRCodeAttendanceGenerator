@@ -24,6 +24,7 @@ POST /api/auth/register
 {
   "name": "Bruno",
   "email": "bruno@gmail.com",
+  "role": "STUDENT",
   "identifier": "AUL/SEN/23/001",
   "password": "12345678"
 }

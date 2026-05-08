@@ -5,11 +5,20 @@ import  { NextResponse } from "next/server";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, email, identifier, password } = body;
+        const { name, email, identifier, role, password } = body;
 
-        if (!name || !email || !identifier || !password) {
+        if (!name || !email || !identifier || !role || !password) {
             return NextResponse.json(
                 { error: "Missing required fields" }, 
+                { status: 400 }
+            );
+        }
+
+        const validRoles = ["STUDENT", "LECTURER"];
+
+        if (!validRoles.includes(role)) {
+            return NextResponse.json(
+                { error: "Invalid role" },
                 { status: 400 }
             );
         }
@@ -41,7 +50,7 @@ export async function POST(req: Request) {
                 email,
                 identifier,
                 password: hashedPassword,
-                role: "STUDENT",
+                role,
             }
         });
 
